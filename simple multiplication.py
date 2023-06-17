@@ -1,25 +1,27 @@
 import random
-num_of_ques = 10
-num_of_ques = int(input("Number of questions to ask ? "))
-bigset = []
-score = 0
-first = second = [1,2,3,4,5,6,7,8,9,10]
-for i in first:
-	for j in second:
-		#populate all possible queations in a list for random selection
-		bigset.append([i,j])
-while num_of_ques > len(bigset):
-	num_of_ques = int(input("Please reduce the number of questions: "))
-#select random questions from all available options
-ques=random.sample(bigset,num_of_ques)
+import math
+import time
 
-len = len(ques)
-print("\nAnswer the following:\n")
-for qloop in range (0,len):
-	firstnum = ques[qloop][0]
-	secondnum = ques[qloop][1]
-	ans = input(str(qloop+1) + ") " + str(firstnum) + " x " + str(secondnum) + " = ")	
-	if ans == str(firstnum * secondnum):
-		score=score +1
-print("\nScore = " + str(score) + "/" + str(num_of_ques))
-input()
+num_of_ques = int(input("Number of questions to ask ? "))
+t1 = time.time()
+score = 0
+highest_num = math.ceil(math.sqrt(num_of_ques)) # highest number to be multiplied, such that we have enough questions
+nums = list(range(1, max(10, highest_num+1)))
+
+questions = []
+for i in range(num_of_ques):
+	questions.append((random.choice(nums), random.choice(nums)))
+
+print(int((time.time()-t1)*1000), "ms")
+
+for idx, (a, b) in enumerate(questions):
+    result = a * b
+    
+    ans = input(f"{idx+1}) {a} x {b} = ")
+    
+    if ans == str(result):
+        score += 1
+    else:
+        print("Wrong! The correct answer is", result)
+
+print(f"Your score is {score} out of {num_of_ques}, which is {int(score/num_of_ques*100)}%")
